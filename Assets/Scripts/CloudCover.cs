@@ -21,7 +21,7 @@ public class CloudCover : MonoBehaviour
         for (int i = 0; i < numClouds; i++) {
             cloudGO = new GameObject();
             cloudTrans = cloudGO.transform;
-            sRend = cloudGO.GetComponent<SpriteRenderer>();
+            sRend = cloudGO.AddComponent<SpriteRenderer>();
 
             int spriteNum = Random.Range(0, cloudSprites.Length);
             sRend.sprite = cloudSprites[spriteNum];
