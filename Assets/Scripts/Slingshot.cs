@@ -6,17 +6,32 @@ public class Slingshot : MonoBehaviour
 {
     public GameObject launchPoint;
 
-    void Awake() {
+    void Awake()
+    {
         Transform launchPointTransform = transform.Find("LaunchPoint");
-        launchPoint = launchPointTransform.gameObject;
-        launchPoint.SetActive(false);
+
+        if (launchPointTransform != null)
+        {
+            launchPoint = launchPointTransform.gameObject;
+            launchPoint.SetActive(false);
+        }
+        else
+        {
+            Debug.LogError("LaunchPoint not found! Make sure it is a child of Slingshot.");
+        }
     }
 
-    void OnMouseEnter() {
-        launchPoint.SetActive(true);
+    void OnMouseEnter()
+    {
+        print("On");
+        if (launchPoint != null)
+            launchPoint.SetActive(true);
     }
 
-    void OnMouseExit() {
-        launchPoint.SetActive(false);
+    void OnMouseExit()
+    {
+        print("Off");
+        if (launchPoint != null)
+            launchPoint.SetActive(false);
     }
 }
