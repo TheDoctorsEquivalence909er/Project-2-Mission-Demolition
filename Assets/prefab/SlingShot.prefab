@@ -93,6 +93,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8437506685390215439}
   - component: {fileID: 8437506685390215436}
+  - component: {fileID: 1454100227}
   m_Layer: 0
   m_Name: SlingShot
   m_TagString: Untagged
@@ -132,6 +133,23 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 3
   m_Center: {x: 0, y: 4, z: 0}
+--- !u!114 &1454100227
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8437506685390215438}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13c9e250bddf163b6accdfa32640bcd2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  projectilePrefab: {fileID: 608549673550826697, guid: dfa4439c842daff44b3c58c9691c62ed, type: 3}
+  launchPoint: {fileID: 8437506685684382323}
+  launchPos: {x: 0, y: 0, z: 0}
+  projectile: {fileID: 608549673550826697, guid: dfa4439c842daff44b3c58c9691c62ed, type: 3}
+  aimingMode: 0
 --- !u!1 &8437506685543949471
 GameObject:
   m_ObjectHideFlags: 0
@@ -308,7 +326,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8437506685684382320}
   m_Layer: 0
-  m_Name: LuchPoint
+  m_Name: LaunchPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

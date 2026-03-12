@@ -4,7 +4,14 @@ using UnityEngine;
 
 public class Slingshot : MonoBehaviour
 {
+    [Header("Inscribed")]
+    public GameObject   projectilePrefab;
+
+    [Header("Dynmaic")]
     public GameObject launchPoint;
+    public Vector3 launchPos;
+    public GameObject projectile;
+    public bool aimingMode;
 
     void Awake()
     {
@@ -14,6 +21,7 @@ public class Slingshot : MonoBehaviour
         {
             launchPoint = launchPointTransform.gameObject;
             launchPoint.SetActive(false);
+            launchPos = launchPointTransform.position;
         }
         else
         {
@@ -34,4 +42,30 @@ public class Slingshot : MonoBehaviour
         if (launchPoint != null)
             launchPoint.SetActive(false);
     }
-}
+
+    void OnMouseDowm(){
+
+        print("mousw down");
+
+        aimingMode = true;
+
+        projectile = Instantiate(projectilePrefab) as GameObject;
+
+        projectile.transform.position = launchPos;
+
+        projectile.GetComponent<Rigidbody>().isKinematic = true;
+    }
+
+    void Upate(){
+
+        if(!aimingMode) return;
+
+        Vector3 mousePos2D = Input.mousePosition;
+        mousePos2D.z = -Camera.main.transform.position.z;
+        Vector3 mousePos3D = Camera.main.ScreenToWorldPoint(mousePos2D);
+
+        Vector3 mouseDelta = mousePos3D -launchPos;
+
+        
+    }
+} 
