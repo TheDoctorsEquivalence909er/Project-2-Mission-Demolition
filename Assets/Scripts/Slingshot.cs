@@ -5,13 +5,14 @@ using UnityEngine;
 public class Slingshot : MonoBehaviour
 {
     [Header("Inscribed")]
-    public GameObject   projectilePrefab;
+    public GameObject projectilePrefab;
 
     [Header("Dynmaic")]
     public GameObject launchPoint;
     public Vector3 launchPos;
     public GameObject projectile;
     public bool aimingMode;
+    public float velocityMult = 10f;
 
     void Awake()
     {
@@ -66,6 +67,26 @@ public class Slingshot : MonoBehaviour
 
         Vector3 mouseDelta = mousePos3D -launchPos;
 
-        
+        float maxMangitude = this.GetComponent<SphereCollider>().radius; 
+        if (mouseDelta.magnitude > maxMangitude) {
+            mouseDelta.Normalize();
+            mouseDelta *= maxMangitude;
+        }
+
+        Vector3 projPos = launchPos + mouseDelta;
+        projectile.transform.position = projPos;
+
+        if ( Input.GetMouseButtonUp(0)){
+            aimingMode = false;
+            Rigidbody proRB = projectile.GetComponent<Rigidbody>();
+            proRB.isKinematic = false;
+            proRB.collisionDetectionMode = CollisionDetectionMode.Continuous;
+            proRB.velocity = -mouseDelta * velocityMult;
+            projectile = null;
+
+            proRB.velocity = -mouseDelta * velocityMult;
+            FollowCam.POI = projectile;
+            projectile = null;
+        }
     }
 } 
