@@ -44,7 +44,7 @@ public class Slingshot : MonoBehaviour
             launchPoint.SetActive(false);
     }
 
-    void OnMouseDowm(){
+    void OnMouseDown(){
 
         print("mousw down");
 
@@ -57,7 +57,7 @@ public class Slingshot : MonoBehaviour
         projectile.GetComponent<Rigidbody>().isKinematic = true;
     }
 
-    void Upate(){
+    void Update(){
 
         if(!aimingMode) return;
 
@@ -67,10 +67,10 @@ public class Slingshot : MonoBehaviour
 
         Vector3 mouseDelta = mousePos3D -launchPos;
 
-        float maxMangitude = this.GetComponent<SphereCollider>().radius; 
-        if (mouseDelta.magnitude > maxMangitude) {
+        float maxMagnitude = this.GetComponent<SphereCollider>().radius; 
+        if (mouseDelta.magnitude > maxMagnitude) {
             mouseDelta.Normalize();
-            mouseDelta *= maxMangitude;
+            mouseDelta *= maxMagnitude;
         }
 
         Vector3 projPos = launchPos + mouseDelta;
