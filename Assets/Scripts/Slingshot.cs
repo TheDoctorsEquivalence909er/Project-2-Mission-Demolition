@@ -81,8 +81,6 @@ public class Slingshot : MonoBehaviour
             Rigidbody proRB = projectile.GetComponent<Rigidbody>();
             proRB.isKinematic = false;
             proRB.collisionDetectionMode = CollisionDetectionMode.Continuous;
-            proRB.velocity = -mouseDelta * velocityMult;
-            projectile = null;
 
             proRB.velocity = -mouseDelta * velocityMult;
             FollowCam.POI = projectile;
