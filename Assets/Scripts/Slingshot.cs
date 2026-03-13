@@ -7,12 +7,13 @@ public class Slingshot : MonoBehaviour
     [Header("Inscribed")]
     public GameObject projectilePrefab;
 
-    [Header("Dynmaic")]
+    [Header("Dynamic")]
     public GameObject launchPoint;
     public Vector3 launchPos;
     public GameObject projectile;
     public bool aimingMode;
     public float velocityMult = 10f;
+    public GameObject projLinePrefab;
 
     void Awake()
     {
@@ -32,43 +33,48 @@ public class Slingshot : MonoBehaviour
 
     void OnMouseEnter()
     {
-        print("On");
         if (launchPoint != null)
             launchPoint.SetActive(true);
     }
 
     void OnMouseExit()
     {
-        print("Off");
         if (launchPoint != null)
             launchPoint.SetActive(false);
     }
 
-    void OnMouseDown(){
-
-        print("mousw down");
+    void OnMouseDown()
+    {
+        if (projectilePrefab == null) return;
 
         aimingMode = true;
 
-        projectile = Instantiate(projectilePrefab) as GameObject;
-
+        projectile = Instantiate(projectilePrefab);
         projectile.transform.position = launchPos;
 
-        projectile.GetComponent<Rigidbody>().isKinematic = true;
+        Rigidbody rb = projectile.GetComponent<Rigidbody>();
+        if (rb != null)
+            rb.isKinematic = true;
     }
 
-    void Update(){
-
-        if(!aimingMode) return;
+    void Update()
+    {
+        if (!aimingMode) return;
+        if (projectile == null) return;
 
         Vector3 mousePos2D = Input.mousePosition;
         mousePos2D.z = -Camera.main.transform.position.z;
-        Vector3 mousePos3D = Camera.main.ScreenToWorldPoint(mousePos2D);
 
-        Vector3 mouseDelta = mousePos3D -launchPos;
+        Vector3 mousePos3D =
+            Camera.main.ScreenToWorldPoint(mousePos2D);
 
-        float maxMagnitude = this.GetComponent<SphereCollider>().radius; 
-        if (mouseDelta.magnitude > maxMagnitude) {
+        Vector3 mouseDelta = mousePos3D - launchPos;
+
+        SphereCollider sc = GetComponent<SphereCollider>();
+        float maxMagnitude = sc != null ? sc.radius : 1f;
+
+        if (mouseDelta.magnitude > maxMagnitude)
+        {
             mouseDelta.Normalize();
             mouseDelta *= maxMagnitude;
         }
@@ -76,15 +82,30 @@ public class Slingshot : MonoBehaviour
         Vector3 projPos = launchPos + mouseDelta;
         projectile.transform.position = projPos;
 
-        if ( Input.GetMouseButtonUp(0)){
+        if (Input.GetMouseButtonUp(0))
+        {
             aimingMode = false;
-            Rigidbody proRB = projectile.GetComponent<Rigidbody>();
-            proRB.isKinematic = false;
-            proRB.collisionDetectionMode = CollisionDetectionMode.Continuous;
 
-            proRB.velocity = -mouseDelta * velocityMult;
+            Rigidbody proRB = projectile.GetComponent<Rigidbody>();
+
+            if (proRB != null)
+            {
+                proRB.isKinematic = false;
+                proRB.collisionDetectionMode =
+                    CollisionDetectionMode.Continuous;
+
+                proRB.velocity = -mouseDelta * velocityMult;
+            }
+
             FollowCam.POI = projectile;
+
+            // ✅ FIXED — should spawn line prefab, not projectile
+            if (projLinePrefab != null)
+            {
+                Instantiate(projLinePrefab, projectile.transform);
+            }
+
             projectile = null;
         }
     }
-} 
+}
