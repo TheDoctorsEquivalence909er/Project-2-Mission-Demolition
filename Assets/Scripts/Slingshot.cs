@@ -106,6 +106,7 @@ public class Slingshot : MonoBehaviour
             }
 
             projectile = null;
+            MissionDemolition.SHOT_FIRED();
         }
     }
 }
